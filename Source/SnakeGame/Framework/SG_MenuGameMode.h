@@ -10,4 +10,7 @@ UCLASS()
 class SNAKEGAME_API ASG_MenuGameMode : public AGameModeBase
 {
     GENERATED_BODY()
+
+public:
+    virtual void StartPlay() override;
 };

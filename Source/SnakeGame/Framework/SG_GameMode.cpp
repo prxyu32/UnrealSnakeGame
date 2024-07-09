@@ -82,6 +82,8 @@ void ASG_GameMode::StartPlay()
     HUD->SetModel(Game);
     const FString ResetGameKeyName = SnakeGame::WorldUtils::FindActionKeyName(InputMapping, ResetGameInputAction);
     HUD->SetInputKeyNames(ResetGameKeyName);
+
+    SnakeGame::WorldUtils::SetUIInput(GetWorld(), false);
 }
 
 void ASG_GameMode::NextColor()
@@ -180,6 +182,8 @@ void ASG_GameMode::OnGameReset(const FInputActionValue& Value)
         SnakeInput = SnakeGame::Input::Default;
 
         HUD->SetModel(Game);
+
+        SnakeGame::WorldUtils::SetUIInput(GetWorld(), false);
     }
 }
 
@@ -222,6 +226,7 @@ void ASG_GameMode::SubscribeOnGameEvents()
                     UE_LOG(LogSnakeGameMode, Display, TEXT("Score: %i"), Game->score());
                     SnakeVisual->Explode();
                     FoodVisual->Hide();
+                    WorldUtils::SetUIInput(GetWorld(), true);
                     break;
                 case GameplayEvent::GameCompleted:
                     UE_LOG(LogSnakeGameMode, Display, TEXT("Game Completed"));
