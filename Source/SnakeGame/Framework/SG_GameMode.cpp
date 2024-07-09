@@ -17,6 +17,7 @@
 #include "EnhancedInputComponent.h"
 #include "UI/SG_HUD.h"
 #include "World/SG_WorldUtils.h"
+#include "Framework/SG_GameUserSettings.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSnakeGameMode, All, All)
 
@@ -185,10 +186,24 @@ void ASG_GameMode::OnGameReset(const FInputActionValue& Value)
 SnakeGame::Settings ASG_GameMode::MakeSettings() const
 {
     SnakeGame::Settings GS;
-    GS.gridDims = SnakeGame::Dim{GridDims.X, GridDims.Y};
+
+    // Directive WITH_EDITOR means code below will only work in the editor configuration.
+    // Packaged game will skip this code.
+#if WITH_EDITOR
+    if (bOverrideUserSettings)
+    {
+        GS.gridDims = SnakeGame::Dim{GridDims.X, GridDims.Y};
+        GS.gameSpeed = GameSpeed;
+    }
+    else
+#endif
+        if (const auto* UserSettings = USG_GameUserSettings::Get())
+    {
+        GS.gridDims = UserSettings->GridSize();
+        GS.gameSpeed = UserSettings->GameSpeed();
+    }
     GS.snake.defaultSize = SnakeDefaultSize;
-    GS.gameSpeed = GameSpeed;
-    GS.snake.startPosition = SnakeGame::Grid::center(GridDims.X, GridDims.Y);
+    GS.snake.startPosition = SnakeGame::Grid::center(GS.gridDims.width, GS.gridDims.height);
 
     return GS;
 }

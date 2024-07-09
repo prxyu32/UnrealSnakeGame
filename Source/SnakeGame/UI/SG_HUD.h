@@ -12,8 +12,7 @@ class USG_GameOverWidget;
 UENUM()
 enum class EUIGameState : uint8
 {
-    StartGame = 0,
-    GameInProgress,
+    GameInProgress = 0,
     GameOver,
     GameCompleted
 };

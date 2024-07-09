@@ -27,13 +27,17 @@ public:
     virtual void Tick(float DeltaSeconds) override;
 
 protected:
-    UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "10", ClampMax = "100"), Category = "Settings")
+    UPROPERTY(EditDefaultsOnly, Category = "Settings")
+    bool bOverrideUserSettings{false};
+
+    UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "10", ClampMax = "100", EditCondition = "bOverrideUserSettings"), Category = "Settings")
     FUintPoint GridDims{10, 10};
 
-    UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "4", ClampMax = "10"), Category = "Settings")
+    UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "4", ClampMax = "10", EditCondition = "bOverrideUserSettings"), Category = "Settings")
     uint32 SnakeDefaultSize{5};
 
-    UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "0.01", ClampMax = "0.5"), Category = "Settings")
+    UPROPERTY(EditDefaultsOnly,  //
+        meta = (ClampMin = "0.01", ClampMax = "0.5", EditCondition = "bOverrideUserSettings"), Category = "Settings")
     float GameSpeed{0.1f};
 
     UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "10", ClampMax = "100"), Category = "Settings")
