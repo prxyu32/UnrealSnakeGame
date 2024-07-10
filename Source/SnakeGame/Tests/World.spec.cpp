@@ -35,7 +35,7 @@ void FSnakeWorld::Define()
             BeforeEach(
                 [this]()
                 {
-                    AutomationOpenMap("TestEmptyLevel");
+                    AutomationOpenMap("/Game/Tests/TestEmptyLevel");
                     World = GetTestGameWorld();
 
                     const char* GridBPName = "Blueprint'/Game/World/BP_SnakeGrid.BP_SnakeGrid'";
@@ -95,7 +95,7 @@ void FSnakeWorld::Define()
             BeforeEach(
                 [this]()
                 {
-                    AutomationOpenMap("GameLevel");
+                    AutomationOpenMap("/Game/Levels/GameLevel");
                     World = GetTestGameWorld();
                 });
 
