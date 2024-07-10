@@ -3,7 +3,7 @@
 #include "UI/SG_MenuHUD.h"
 #include "UI/SG_StartGameWidget.h"
 
-void ASG_MenuHUD::BeginPlay() 
+void ASG_MenuHUD::BeginPlay()
 {
     Super::BeginPlay();
 

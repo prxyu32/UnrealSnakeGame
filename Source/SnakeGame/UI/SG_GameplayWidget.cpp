@@ -21,7 +21,7 @@ void USG_GameplayWidget::SetScore(uint32 Score)
     }
 }
 
-void USG_GameplayWidget::SetResetGameKeyName(const FString& ResetGameKeyName) 
+void USG_GameplayWidget::SetResetGameKeyName(const FString& ResetGameKeyName)
 {
     if (ResetGameText)
     {

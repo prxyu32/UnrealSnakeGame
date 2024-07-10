@@ -102,11 +102,8 @@ void FSnakeFramework::Define()
                         TestTrueExpr(Speed == GameUserSettings->GameSpeedByName(Name));
                     }
                 });
-            It("SpeedElemMightBeDefaultIfnameDoesntExist", 
-                [this]() 
-                { 
-                    TestTrueExpr(EGameSpeed::Snake == GameUserSettings->GameSpeedByName("xxxxxxxxxxxx")); 
-                });
+            It("SpeedElemMightBeDefaultIfnameDoesntExist",
+                [this]() { TestTrueExpr(EGameSpeed::Snake == GameUserSettings->GameSpeedByName("xxxxxxxxxxxx")); });
             It("SpeedSettingsCanBeSaved",
                 [this]()
                 {

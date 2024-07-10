@@ -55,7 +55,7 @@ void ASG_Food::Explode()
     }
 }
 
-void ASG_Food::Hide() 
+void ASG_Food::Hide()
 {
     SetActorHiddenInGame(true);
 }
