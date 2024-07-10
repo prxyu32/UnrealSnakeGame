@@ -34,10 +34,11 @@ private:
     void OnStartGame();
 
     UFUNCTION()
-    void OnGameSpeedChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
-
-    UFUNCTION()
-    void OnGridSizeChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+    void OnSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
 
     void SaveSettings();
+    void InitComboBox(                               //
+        TObjectPtr<UComboBoxString>& ComboBox,       //
+        TFunction<TArray<FString>()> OptionsGetter,  //
+        TFunction<FString()> CurrentOptionGetter);
 };

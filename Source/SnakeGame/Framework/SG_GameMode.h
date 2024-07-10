@@ -24,7 +24,7 @@ class SNAKEGAME_API ASG_GameMode : public AGameModeBase
 public:
     ASG_GameMode();
     virtual void StartPlay() override;
-    virtual void Tick(float DeltaSeconds) override; // 1 18
+    virtual void Tick(float DeltaSeconds) override;
 
 protected:
     UPROPERTY(EditDefaultsOnly, Category = "Settings")

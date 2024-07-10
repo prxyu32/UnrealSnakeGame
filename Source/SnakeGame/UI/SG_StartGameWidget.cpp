@@ -6,47 +6,54 @@
 #include "Kismet/GameplayStatics.h"
 #include "Framework/SG_GameUserSettings.h"
 
-void USG_StartGameWidget::NativeOnInitialized() 
+void USG_StartGameWidget::NativeOnInitialized()
 {
     Super::NativeOnInitialized();
 
     auto* UserSettings = USG_GameUserSettings::Get();
     if (!UserSettings)
     {
-        return; // @todo: add error
+        return;  // @todo: add error
     }
 
     check(StartGameButton);
     StartGameButton->OnClicked.AddDynamic(this, &ThisClass::OnStartGame);
 
-    check(GameSpeedComboBox);
-    GameSpeedComboBox->ClearOptions();
-    for (const auto& Option: UserSettings->GameSpeedOptions())
-    {
-        GameSpeedComboBox->AddOption(Option);
-    }
-    GameSpeedComboBox->SetSelectedOption(UserSettings->CurrentGameSpeedOption());
-    GameSpeedComboBox->OnSelectionChanged.AddDynamic(this, &ThisClass::OnGameSpeedChanged);
+    InitComboBox(
+        GameSpeedComboBox,                                        //
+        [&]() { return UserSettings->GameSpeedOptions(); },       //
+        [&]() { return UserSettings->CurrentGameSpeedOption(); }  //
+    );
 
-    check(GridSizeComboBox);
-    GridSizeComboBox->ClearOptions();
-    for (const auto& Option : UserSettings->GridSizeOptions())
-    {
-        GridSizeComboBox->AddOption(Option);
-    }
-    GridSizeComboBox->SetSelectedOption(UserSettings->CurrentGridSizeOption());
-    GridSizeComboBox->OnSelectionChanged.AddDynamic(this, &ThisClass::OnGridSizeChanged);
+    InitComboBox(
+        GridSizeComboBox,                                        //
+        [&]() { return UserSettings->GridSizeOptions(); },       //
+        [&]() { return UserSettings->CurrentGridSizeOption(); }  //
+    );
 }
 
-void USG_StartGameWidget::OnStartGame() 
+void USG_StartGameWidget::InitComboBox(
+    TObjectPtr<UComboBoxString>& ComboBox, TFunction<TArray<FString>()> OptionsGetter, TFunction<FString()> CurrentOptionGetter)
+{
+    check(ComboBox);
+    ComboBox->ClearOptions();
+    for (const auto& Option : OptionsGetter())
+    {
+        ComboBox->AddOption(Option);
+    }
+    ComboBox->SetSelectedOption(CurrentOptionGetter());
+    ComboBox->OnSelectionChanged.AddDynamic(this, &ThisClass::OnSelectionChanged);
+}
+
+void USG_StartGameWidget::OnStartGame()
 {
     if (!GameLevel.IsNull())
     {
-        UGameplayStatics::OpenLevel(GetWorld(), FName(GameLevel.GetAssetName())); 
+        UGameplayStatics::OpenLevel(GetWorld(), FName(GameLevel.GetAssetName()));
     }
 }
 
-void USG_StartGameWidget::OnGameSpeedChanged(FString SelectedItem, ESelectInfo::Type SelectionType) 
+void USG_StartGameWidget::OnSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType)
 {
     if (SelectionType == ESelectInfo::OnMouseClick)
     {
@@ -54,15 +61,7 @@ void USG_StartGameWidget::OnGameSpeedChanged(FString SelectedItem, ESelectInfo::
     }
 }
 
-void USG_StartGameWidget::OnGridSizeChanged(FString SelectedItem, ESelectInfo::Type SelectionType) 
-{
-    if (SelectionType == ESelectInfo::OnMouseClick)
-    {
-        SaveSettings();
-    }
-}
-
-void USG_StartGameWidget::SaveSettings() 
+void USG_StartGameWidget::SaveSettings()
 {
     if (auto* UserSettings = USG_GameUserSettings::Get())
     {

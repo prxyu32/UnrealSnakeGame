@@ -29,6 +29,7 @@ class SNAKEGAME_API USG_GameUserSettings : public UGameUserSettings
     GENERATED_BODY()
 
 public:
+    USG_GameUserSettings();
     static USG_GameUserSettings* Get();
 
     TArray<FString> GameSpeedOptions() const { return OptionNames(GameSpeeds); }
